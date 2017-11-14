@@ -1,0 +1,7 @@
+<Project>
+  <PropertyGroup>
+    <Company>Steinpilz</Company>
+    <Authors>Steinpilz, ivanbenko</Authors>
+    <RepositoryUrl>https://github.com/Steinpilz/confifu-owin</RepositoryUrl>
+  </PropertyGroup>
+</Project>

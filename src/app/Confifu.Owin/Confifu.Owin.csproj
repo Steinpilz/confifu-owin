@@ -1,0 +1,12 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <Import Project="..\..\common.props" />
+  <PropertyGroup>
+    <TargetFramework>net451</TargetFramework>
+    <Description>Confifu.Owin</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Confifu.Abstractions" Version="2.1.2" />
+    <PackageReference Include="Microsoft.Owin" Version="3.1.0" />
+  </ItemGroup>
+
+</Project>
