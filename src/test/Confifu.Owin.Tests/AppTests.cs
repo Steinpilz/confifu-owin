@@ -76,7 +76,68 @@ namespace Confifu.Owin.Tests
             var owinConfiguration = app.AppConfig.GetOwinConfiguration();
             owinConfiguration.ShouldNotBeNull();
         }
-        
+
+        [Fact]
+        public void it_runs_staged_configuration_in_proper_order()
+        {
+            var app = new TestApp();
+
+            var calls = new List<string>();
+
+            app.AppConfig.UseOwin(owin => {
+
+                owin.AddConfiguration("authorize", appBuilder =>
+                {
+                    calls.Add("authorize");
+                });
+                owin.AddConfiguration("auth", appBuilder => {
+                    calls.Add("auth");
+                });
+                owin.AddConfiguration("log", appBuilder =>
+                {
+                    calls.Add("log");
+                });
+
+                owin.OrderStages("auth", "authorize", "log");
+            });
+
+            var owinConfiguration = app.AppConfig.GetOwinConfiguration();
+
+            var appBuilderMock = Substitute.For<IAppBuilder>();
+            owinConfiguration(appBuilderMock);
+
+            calls.ShouldBe(new[] { "auth", "authorize", "log" });
+        }
+
+
+        [Fact]
+        public void it_detects_circular_dependency_in_stages_order()
+        {
+            var app = new TestApp();
+
+            var calls = new List<string>();
+
+            app.AppConfig.UseOwin(owin => {
+
+                owin.AddConfiguration("authorize", appBuilder =>
+                {
+                    calls.Add("authorize");
+                });
+                owin.AddConfiguration("auth", appBuilder => {
+                    calls.Add("auth");
+                });
+                owin.AddConfiguration("log", appBuilder =>
+                {
+                    calls.Add("log");
+                });
+
+                owin.OrderStages("auth", "authorize", "log", "default", "auth");
+            });
+
+            Should.Throw<InvalidOperationException>(() => app.AppConfig.GetOwinConfiguration());
+        }
+
+
         class TestApp : AppSetup
         {
             public TestApp() : base(new EmptyConfigVariables())
