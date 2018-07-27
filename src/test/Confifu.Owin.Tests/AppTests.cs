@@ -66,6 +66,29 @@ namespace Confifu.Owin.Tests
             appBuilderMock.Received(1).Use(middleware2);
         }
 
+        [Fact]
+        public void it_does_not_smoke_when_stage_configuration_is_not_defined()
+        {
+            var app = new TestApp();
+
+            var calls = new List<string>();
+
+            app.AppConfig.UseOwin(owin => {
+
+                owin.AddConfiguration("authorize", appBuilder =>
+                {
+                    calls.Add("authorize");
+                });
+                owin.AddConfiguration("log", appBuilder =>
+                {
+                    calls.Add("log");
+                });
+
+                owin.OrderStages("auth", "authorize", "log");
+            });
+
+            var owinConfiguration = app.AppConfig.GetOwinConfiguration();
+        }
 
         [Fact]
         public void it_always_return_valid_owin_configuration()

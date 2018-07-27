@@ -104,8 +104,13 @@ namespace Confifu.Owin.Config
 
             var orderedStages = new List<StageOwinConfiguration>();
 
-            IEnumerable<string> dependentStages(string stage)
-                => Orders.TryGetValue(stage, out HashSet<string> stages) ? stages : Enumerable.Empty<string>();
+            IEnumerable<string> dependentStages(string stage) => 
+                Orders.TryGetValue(stage, out HashSet<string> stages) ? stages : Enumerable.Empty<string>();
+
+            IEnumerable<StageOwinConfiguration> configuration(string stage) =>
+                Configurations.TryGetValue(stage, out List<StageOwinConfiguration> result)
+                    ? result.AsEnumerable()
+                    : Enumerable.Empty<StageOwinConfiguration>();
 
             void visitStage(string stage)
             {
@@ -123,7 +128,7 @@ namespace Confifu.Owin.Config
                     visitStage(dependentStage);
                 }
 
-                orderedStages.AddRange(Configurations[stage]);
+                orderedStages.AddRange(configuration(stage));
 
                 visiting.Remove(stage);
             }
