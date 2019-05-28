@@ -1,7 +1,7 @@
-﻿using System;
-
-namespace Confifu.Owin.ConsoleHost
+﻿namespace Confifu.Owin.ConsoleHost
 {
+    using System;
+
     class Program
     {
         static void Main(string[] args)
