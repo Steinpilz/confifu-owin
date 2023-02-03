@@ -9,6 +9,8 @@ let libParams = Lib.setup <| fun p ->
     { p with 
         PublishProjects = !!"src/app/**/*.csproj"
         UseDotNetCliToPack = true
+        UseDotNetCliToTest = true
+        UseDotNetCliToRestore = true
         NuGetFeed = 
             { p.NuGetFeed with 
                 ApiKey = environVarOrFail <| "NUGET_API_KEY" |> Some
