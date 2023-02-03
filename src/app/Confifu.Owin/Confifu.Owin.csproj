@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net451</TargetFramework>
     <Description>Confifu.Owin</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>	  
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Confifu.Abstractions" Version="2.1.2" />
